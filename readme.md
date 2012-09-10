@@ -17,9 +17,9 @@ Cork has the following dependencies:
 
 To get started, all you need to do is clone the repository and start the example service:
 
-    git clone git@github.com:oliver32767/cork
-    chmod +x cork.py
-    ./cork.py example/service.py
+    $ git clone git@github.com:oliver32767/cork
+    $ chmod +x cork.py
+    $ ./cork.py example/service.py
 
 Now open up your web browser, and navigate to [http://localhost:7085/test](http://localhost:7085/test).
 You should see some test data formatted as xml displayed in your browser window.
@@ -107,18 +107,19 @@ This data is organized in a key value pair dictionary, accessible from within yo
 This enables you to configure your service on the fly and can also be used to coordinate the state of your service with an external process
 (useful for automated tests which may need to verify request content, for example).
 
-*How It Works*
+**How It Works**
 
 On any given cork service, there is a special route used to perform these operations: `/~cork`.
-State can be set by POSTing a <value> as the request's body to `/~cork/<key>`, which is recieved by the service.
+State can be set by POSTing a \<value\> as the request's body to `/~cork/<key>`, which is recieved by the service.
 The POST request's body is appended to the MultiDict `cork.state` using the key specified.
 
 To get state from a running service, send a GET request to `/~cork/<key>`.
 The response will be in the form `key=value`.
 
-**Using cork.py to set and get state from a Cork service**
+**Using cork.py to Set and Get State From a running Cork Service**
 
-Assume for example that we've already started a service on `localhost:7085`.
+Though not required, Cork comes with a simple built-in mechanism for setting and getting data this way.
+Assume for example that we've already started a service on the default host:port, though the following uses respect the `--host` and `--port` options.
 To set state data use the command:
 
     $ ./cork.py --set-state "foo=bar" "baz=spaces only work if the argument is quoted"
