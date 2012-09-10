@@ -13,7 +13,7 @@ Other platforms and interpereter versions *should* work but have not been tested
 Cork has the following dependencies:
 * Python 2.7+ (your system's default Python interpereter should be fine)
 * bottle.py 0.10 (included in this repo)
-* \[optional\] Python WSGI server (such as cherrypy or gevent)
+* Python WSGI server (optional)
 
 To get started, all you need to do is clone the repository and start the example service:
 
@@ -37,20 +37,69 @@ Using a Different WSGI Server
 -----------------------------
 
 Cork by default uses Bottle's built-in WSGI server based on `wsgiref`.
-This server will be able to handle development and testing, and should be sufficient for light use,
-but in the event that this server is insufficient
-(such as when handling multiple simultaneous connections is required, or any time you experience mysterious broken pipe errors)
+This server will be able to handle development and testing, and should be sufficient for light use.
+In the event that the built-in server is insufficient
+(such as when handling multiple simultaneous connections is required,
+or any time you experience mysterious broken pipe errors)
 you will want to install/obtain a [server backend supported by Bottle](http://bottlepy.org/docs/dev/deployment.html#switching-the-server-backend).
 We recommend [gevent](http://www.gevent.org/).
 
 Use the `--server` option to set the server bottle will use (example `--server=gevent`).
 
-Read the launcher help for the `--lib` option if you do not have permission to install server packages system-wide or simply don't want to.
+Read the launcher help for the `--lib` option if you do not have permission to
+install server packages system-wide or simply don't want to.
 
-Cork, SSL, and Charles Proxy
+Cork and Charles Proxy
 ----------------------------------------
 
-    # TODO
+Using a proxy server has two main advantages:
+
+* You can use the proxy to decrypt/encrypt SSL traffic.
+
+* No need to change hostnames/urls in the client code;
+this means that you can mock services for clients you do not have the source code to.
+
+[Charles Proxy](http://www.charlesproxy.com) is the recommended proxy to use with Cork.
+It supports SSL decryption/encryption, transparent url routing, and request/response inspection (useful for gathering canned data).
+Consult the Charles Proxy documentation to configure Charles to work with your client.
+Android testers should check out this
+[blog post](http://jaanus.com/post/17476995356/debugging-http-on-an-android-phone-or-tablet-with)
+for instructions on how to set up Android 4.0+ devices to proxy through Charles.
+
+Listening on Multiple Ports
+---------------------------
+Bottle does not support listening on multiple ports, but you have a few options:
+
+* Start multiple cork services each listening on a different port
+
+* Use a proxy to route everything to the same port (recommended)
+
+As an example of the second method, consider the following API endpoints:
+```
+http://www.example.com:7085/account
+http://www.example.com:8888/search
+```
+
+In your proxy, you could map the URLs like so:
+```
+http://www.example.com:4040/* -> http://localhost:7085/4040/
+http://www.example.com:8888/* -> http://localhost:7085/8888/
+```
+
+And set up the following routes:
+```python
+@route("/4040/<path:path>)
+def handlerA(path):
+    
+    # handler code for services originally running on port 4040
+
+@route("/8888/<path:path>)
+def handlerB(path):
+    
+    # handler code for services originally running on port 8888
+```
+
+Now, the request http://www.example.com:8888/search?q=search%20terms maps to http://localhost/8888/search?q=search%20terms
 
 Examples
 --------
@@ -100,3 +149,5 @@ def handler(path)
     log(path, tag = "example") # the tag argument does not need to be explicitly named, and is optional (default = "cork")
     return("<b>Your request has been logged.</b>")
 ```
+
+For more information on using Bottle, check the [Bottle API reference](http://bottlepy.org/docs/dev/api.html).
