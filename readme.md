@@ -172,7 +172,7 @@ def handler(path)
     return("<b>Your request has been logged.</b>")
 ```
 
-Responding to an request with a 404 error
+Responding to a request with a 404 error
 ```python
 from bottle import route, HTTPError
 
