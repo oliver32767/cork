@@ -60,7 +60,7 @@ Using a proxy server has two main advantages:
 this means that you can mock services for clients you do not have the source code to.
 
 [Charles Proxy](http://www.charlesproxy.com) is the recommended proxy to use with Cork.
-It supports SSL decryption/encryption, transparent url routing, and request/response inspection (useful for gathering canned data).
+It supports SSL decryption/encryption, mapping remote urls, and request/response inspection (useful for gathering canned data).
 Consult the Charles Proxy documentation to configure Charles to work with your client.
 Android testers should check out this
 [blog post](http://jaanus.com/post/17476995356/debugging-http-on-an-android-phone-or-tablet-with)
@@ -76,30 +76,33 @@ Bottle does not support listening on multiple ports, but you have a few options:
 
 As an example of the second method, consider the following API endpoints:
 ```
-http://www.example.com:7085/account
+http://api.example.com:7085/account
 http://www.example.com:8888/search
 ```
 
 In your proxy, you could map the URLs like so:
 ```
-http://www.example.com:4040/* -> http://localhost:7085/4040/
+http://api.example.com:4040/* -> http://localhost:7085/4040/
 http://www.example.com:8888/* -> http://localhost:7085/8888/
 ```
 
-And set up the following routes:
+Now for example, the request:
+    http://www.example.com:8888/search?q=search%20terms
+    
+maps to:
+    http://localhost/8888/search?q=search%20terms
+
+
+Now just define the routes:
 ```python
 @route("/4040/<path:path>)
 def handlerA(path):
-    
     # handler code for services originally running on port 4040
 
 @route("/8888/<path:path>)
 def handlerB(path):
-    
     # handler code for services originally running on port 8888
 ```
-
-Now, the request http://www.example.com:8888/search?q=search%20terms maps to http://localhost/8888/search?q=search%20terms
 
 Examples
 --------
@@ -119,7 +122,7 @@ Define a dynamic route that returns a reponse generated with bottle's template e
 from bottle import route, template
 from cork import read
 
-@route('/<path:path>')
+@route('/template/<path:path>')
 def handler(path):
     tmpl = "Your request to <b>{{var}}</b> has been handled." 
     return template(tmpl, var = path)
@@ -148,6 +151,15 @@ from cork import log
 def handler(path)
     log(path, tag = "example") # the tag argument does not need to be explicitly named, and is optional (default = "cork")
     return("<b>Your request has been logged.</b>")
+```
+
+Responding with an HTTP error.
+``python
+from bottle import route, HTTPError
+
+route('/errors/<path:path>')
+def handler(path):
+    raise HTTPError(404, "The page you requested can not be found")
 ```
 
 For more information on using Bottle, check the [Bottle API reference](http://bottlepy.org/docs/dev/api.html).
