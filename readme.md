@@ -86,16 +86,16 @@ http://api.example.com:4040/* -> http://localhost:7085/4040/
 http://www.example.com:8888/* -> http://localhost:7085/8888/
 ```
 
-Now for example, the request:
+In this example, the request:
 
     http://www.example.com:8888/search?q=search%20terms
     
-maps to:
+now maps to:
 
     http://localhost:7085/8888/search?q=search%20terms
 
 
-Now just define the routes:
+Here's what the routes look like for this example:
 ```python
 @route("/4040/<path:path>)
 def handlerA(path):
