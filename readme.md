@@ -70,11 +70,10 @@ Define a dynamic route that returns a reponse generated with bottle's template e
 from bottle import route, template
 from cork import read
 
-@route('/dynamic/<path:path>')
+@route('/<path:path>')
 def handler(path):
-    return template(read("data/response.xml"), \
-                    to="Corky", \
-                    body="Here's an example of a response from '%s'" % path)
+    tmpl = "Your request to <b>{{var}}</b> has been handled." 
+    return template(tmpl, var = path)
 ```
 
 Detect a specific query variable in a request and send back JSON with the correct MIME-type.
@@ -96,8 +95,8 @@ Logging a message. Note: logging messages are only displayed when the `-v` optio
 from bottle import route
 from cork import log
 
-@route('/example/<path:path>')
+@route('/log/<path:path>')
 def handler(path)
-    log(path)
-    return("<b>your request has been logged</b>")
+    log(path, tag = "example") # the tag argument does not need to be explicitly named, and is optional (default = "cork")
+    return("<b>Your request has been logged.</b>")
 ```
