@@ -76,7 +76,7 @@ Bottle does not support listening on multiple ports, but you have a few options:
 
 As an example of the second method, consider the following API endpoints:
 ```
-http://api.example.com:7085/account
+http://api.example.com:4040/account
 http://www.example.com:8888/search
 ```
 
@@ -97,11 +97,11 @@ now maps to:
 
 Here's what the routes look like for this example:
 ```python
-@route("/4040/<path:path>)
+@route("/4040/account)
 def handlerA(path):
     # handler code for services originally running on port 4040
 
-@route("/8888/<path:path>)
+@route("/8888/search)
 def handlerB(path):
     # handler code for services originally running on port 8888
 ```
