@@ -77,7 +77,7 @@ if __name__ == '__main__':
     # now we just monkey-patch it in
     sys.modules['cork'] = cork
 
-    parser = argparse.ArgumentParser(description='Run a simple mock service based on handlers in a directory tree')
+    parser = argparse.ArgumentParser(description='Mock APIs with Bottle.py')
     parser.add_argument("service", metavar = "SERVICE", nargs = '?', default = ".", help = "Path to the .py that describes the service")
     
     parser.add_argument("--verbose", "-v", action = 'store_true', help = "Show messages from cork.log()")
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     parser.add_argument("--port", default = 7085, type = int, help = "Set the port that cork listens on (default: 7085)")
     parser.add_argument("--server", default="wsgiref", help = "Switch the server backend (default: bottle.py embedded)")
     
-    parser.add_argument("--reloader", action = 'store_true', help = "Enable the bottle.py reloader, useful for development purposes")
+    #parser.add_argument("--reloader", action = 'store_true', help = "Enable the bottle.py reloader, useful for development purposes")
     
     parser.add_argument("--state", metavar = "STATE", help = "Helpful feature that sends an HTTP GET request in the form of: '<host>:<port>/~cork?<STATE>' This MUST be url encoded!")
     
