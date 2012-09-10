@@ -114,7 +114,7 @@ Note, the path given to `read()` is assumed to be relative the \*.py file passed
 from bottle import route
 from cork import read
 
-@route('/static/path', method = ['GET', 'POST'])
+@route('/static/path')
 def handler():
     return read("data/response.xml")
 ```
@@ -128,6 +128,23 @@ from cork import read
 def handler(path):
     tmpl = "Your request to <b>{{var}}</b> has been handled." 
     return template(tmpl, var = path)
+```
+
+Define routes for a variety of http methods
+```python
+from bottle import route
+
+@route('/method/get')
+def handlerA():
+    # ...
+    
+@route('/method/post', method = 'POST')
+def handlerB():
+    # ...
+    
+@route('/method/multi', method = ['GET', 'POST'])
+def handlerC():
+    # ...
 ```
 
 Detect a specific query variable in a request and send back JSON with the correct MIME-type.
@@ -155,7 +172,7 @@ def handler(path)
     return("<b>Your request has been logged.</b>")
 ```
 
-Responding with an HTTP error.
+Responding to an http POST with a 404 error
 ```python
 from bottle import route, HTTPError
 
@@ -164,4 +181,4 @@ def handler(path):
     raise HTTPError(404, "The page you requested can not be found")
 ```
 
-For more information on using Bottle, check the [Bottle API reference](http://bottlepy.org/docs/dev/api.html).
+For more information on using the Bottle api, check the [Bottle API reference](http://bottlepy.org/docs/dev/api.html).
