@@ -93,10 +93,11 @@ def handler():
 
 Logging a message. Note: logging messages are only displayed when the `-v` option is used.
 ```python
+from bottle import route
 from cork import log
 
 @route('/example/<path:path>')
 def handler(path)
     log(path)
     return("<b>your request has been logged</b>")
-'''
+```
