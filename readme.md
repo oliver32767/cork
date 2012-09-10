@@ -72,7 +72,9 @@ from cork import read
 
 @route('/dynamic/<path:path>')
 def handler(path):
-    return template(read("data/response.xml"), to="Corky", body="Here's an example of a response from '%s'" % path)
+    return template(read("data/response.xml"), \
+                    to="Corky", \
+                    body="Here's an example of a response from '%s'" % path)
 ```
 
 Detect a specific query variable in a request and send back JSON with the correct MIME-type.
@@ -87,7 +89,7 @@ def handler():
     response.body = '{"id":"%s"}' % query_id
     
     return response
-'''
+```
 
 Logging a message. Note: logging messages are only displayed when the `-v` option is used.
 ```python
