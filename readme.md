@@ -92,7 +92,7 @@ Now for example, the request:
     
 maps to:
 
-    http://localhost/8888/search?q=search%20terms
+    http://localhost:7085/8888/search?q=search%20terms
 
 
 Now just define the routes:
