@@ -84,7 +84,7 @@ if __name__ == '__main__':
     parser.add_argument("--debug", "-d", action = 'store_true', help = "Set bottle.debug = True")
     
     #parser.add_argument("--config", metavar = "CONFIG.PY", help = "Path to a .py file to get loaded at startup. Use this to add sonfiguration options to a service.")
-    #parser.add_argument("--lib", metavar = "LIB", help = "Path to a directory you want added to the PYTHONPATH and thus available to your service automatically")
+    parser.add_argument("--lib", metavar = "LIB", help = "Path to a directory you want added to the PYTHONPATH and thus available to your service. Useful if you do not have permission to install packages system-wide or simply don't want to.")
     parser.add_argument("--host", default = "localhost", help = "Server address to bind to. Pass 0.0.0.0 to listens on all interfaces including the external one. (default: localhost)")
     parser.add_argument("--port", default = 7085, type = int, help = "Set the port that cork listens on (default: 7085)")
     parser.add_argument("--server", default="wsgiref", help = "Switch the server backend (default: bottle.py embedded)")
@@ -112,9 +112,9 @@ if __name__ == '__main__':
         
     # otherwise, set up the environment and run the bottle server
 
-#    if args.lib is not None:
-#        print("adding '%s' to sys.path" % os.path.abspath(args.lib))
-#        sys.path.append(os.path.abspath(args.lib))
+    if args.lib is not None:
+        print("adding '%s' to sys.path" % os.path.abspath(args.lib))
+        sys.path.append(os.path.abspath(args.lib))
 #        
 #    if args.config is not None:
 #        print("loading config file '%s'" % args.config)

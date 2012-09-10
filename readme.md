@@ -45,7 +45,7 @@ We recommend [gevent](http://www.gevent.org/).
 
 Use the `--server` option to set the server bottle will use (example `--server=gevent`).
 
-Read the launcher help for the `--lib` option if you do not have permission to install packages system-wide or simply don't want to.
+Read the launcher help for the `--lib` option if you do not have permission to install server packages system-wide or simply don't want to.
 
 Cork, SSL, and Charles Proxy
 ----------------------------------------
@@ -79,7 +79,7 @@ def handler(path):
 
 Detect a specific query variable in a request and send back JSON with the correct MIME-type.
 ```python
-from bottle import request, response
+from bottle import route, request, response
 
 @route('/query')
 def handler():
