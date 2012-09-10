@@ -87,9 +87,11 @@ http://www.example.com:8888/* -> http://localhost:7085/8888/
 ```
 
 Now for example, the request:
+
     http://www.example.com:8888/search?q=search%20terms
     
 maps to:
+
     http://localhost/8888/search?q=search%20terms
 
 
@@ -154,7 +156,7 @@ def handler(path)
 ```
 
 Responding with an HTTP error.
-``python
+```python
 from bottle import route, HTTPError
 
 route('/errors/<path:path>')
