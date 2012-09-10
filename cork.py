@@ -45,22 +45,36 @@ def stop():
     # kill the current cork process
     print("Stopping...")
     os.kill(os.getpid(), signal.SIGKILL)
-    
+
 @route('/~cork')
-def _set_state():
-    # simple api for passing in state date from external processes encoded as a url query
-    log("received state data:")
-    
-    if request.query.stop.lower() == "true":
-        stop()
-    
-    for k in request.query.keys():
-        log("%s: %s" % (k, request.query.get(k)))
-        state.append(k, request.query.get(k))
+@route('/~cork/<path:path>', method = ['GET', 'POST'])
+def _state(path = ''):
+    # simple api for sending/retreiving form data
+
+    if request.method == 'POST':
+        log("recieved new state data")
+        if path == '':
+            log('no uri specified, using default', tag = "warning")
+            path = 'default'
+        elif path == "stop":
+            stop()
+        body = request.body.read()
+        state.append(path, body)
+        raise HTTPError(200)
         
-    raise HTTPError(200)
-    
+    elif request.method == 'GET':
+        log("recieved state query")
+        body = ''
+        if path == '':
+            for k in state.keys():
+                body += "%s=%s\n" % (k, state.get(k, default = ''))
+            response.body = body[:-1] # trim the last newline
+        else:
+            response.body = "%s=%s\n" % (path, state.get(path, default = ''))
+        return response
+
 state = MultiDict()
+
 
 ################################################################################
 # Startup code
@@ -91,27 +105,70 @@ if __name__ == '__main__':
     
     #parser.add_argument("--reloader", action = 'store_true', help = "Enable the bottle.py reloader, useful for development purposes")
     
-    parser.add_argument("--state", metavar = "STATE", help = "Helpful feature that sends an HTTP GET request in the form of: '<host>:<port>/~cork?<STATE>' This MUST be url encoded!")
+    parser.add_argument("--set-state", nargs = '+', metavar = "KEY=VALUE")
+    parser.add_argument("--get-state", nargs = "*", metavar = "KEY")
     
     args = parser.parse_args()
     
     # if we've been given a STATE command, just send it and exit
-    if args.state is not None:
-        try:
-            c = httplib.HTTPConnection(args.host, args.port)
-            c.request('GET', "/~cork?%s" % args.state)
+    #if args.state is not None:
+    #    try:
+    #        c = httplib.HTTPConnection(args.host, args.port)
+    #        c.request('GET', "/~cork?%s" % args.state)
+    #        r = c.getresponse()
+    #        if r.status == 200:
+    #            log("GET %s:%s?%s %d" %(args.host, args.port, args.state, r.status))
+    #        else:
+    #            print("GET %s:%s?%s %d (%s)" %(args.host, args.port, args.state, r.status, r.reason))
+    #        c.close()
+    #    except httplib.BadStatusLine:
+    #        pass # TODO: make error handling less alarming
+    #    exit()
+
+
+    # do this when the user is requesting state
+    if args.get_state is not None:
+        c = httplib.HTTPConnection(args.host, args.port)
+        if args.get_state == []:
+            c.request('GET', "/~cork")
             r = c.getresponse()
             if r.status == 200:
-                log("GET %s:%s?%s %d" %(args.host, args.port, args.state, r.status))
-            else:
-                print("GET %s:%s?%s %d (%s)" %(args.host, args.port, args.state, r.status, r.reason))
+                print(r.read())
             c.close()
-        except httplib.BadStatusLine:
-            pass # TODO: make error handling less alarming
+            exit()
+        else:
+            for q in args.get_state:
+                c.request('GET', "/~cork/%s" % q)
+                r = c.getresponse()
+                if r.status == 200:
+                    print(r.read()[:-1])
+                else:
+                    print(q + "=")
+            c.close()
+            exit()
+    
+    # do this when the user is sending state
+    if args.set_state is not None:
+        c = httplib.HTTPConnection(args.host, args.port)
+        for kv in args.set_state:
+            try:
+                k = kv.split('=')[0]
+                v = kv.split('=')[1]
+            except IndexError:
+                print('Argument must be in the form "KEY=VALUE" (was "%s")' % kv)
+                exit(-1)
+                
+            try:
+                c.request('POST', "/~cork/%s" % k, body = v)
+                r = c.getresponse()
+                if r.status != 200:
+                    print("error POSTing %s=%s" % (k, v))
+            except httplib.BadStatusLine:
+                pass # This error happens when we send a 'stop' command
+        c.close()
         exit()
         
     # otherwise, set up the environment and run the bottle server
-
     if args.lib is not None:
         print("adding '%s' to sys.path" % os.path.abspath(args.lib))
         sys.path.append(os.path.abspath(args.lib))
@@ -126,11 +183,14 @@ if __name__ == '__main__':
     log("bottle.debug = %r" % args.debug)
     
     # load the service
-    
     args.service = os.path.abspath(args.service)
     os.chdir(os.path.dirname(args.service)) # switch to the directory containing the service script
-    execfile(args.service)
-    
+    try:
+        execfile(args.service)
+    except IOError:
+        print("There was an error loading the service '%s'" % args.service)
+        exit(-1)
+        
     # add functionality for the gevent asynchronous wsgi server (recommended)
     if "gevent" in args.server:
         from gevent import monkey
@@ -140,8 +200,8 @@ if __name__ == '__main__':
     try:
         run(server = args.server, \
             host = args.host, \
-            port = args.port, \
-            reloader = args.reloader)
-        
+            port = args.port)
+            #reloader = args.reloader)
+
     except SystemExit:
         log("caught SystemExit signal, terminating")

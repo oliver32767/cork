@@ -86,13 +86,7 @@ http://api.example.com:4040/* -> http://localhost:7085/4040/
 http://www.example.com:8888/* -> http://localhost:7085/8888/
 ```
 
-In this example, the request:
-
-    http://www.example.com:8888/search?q=search%20terms
-    
-now maps to:
-
-    http://localhost:7085/8888/search?q=search%20terms
+In this example, the request `http://www.example.com:8888/search?q=search%20terms` now maps to `http://localhost:7085/8888/search?q=search%20terms`.
 
 
 Here's what the routes look like for this example:
@@ -105,6 +99,45 @@ def handlerA(path):
 def handlerB(path):
     # handler code for services originally running on port 8888
 ```
+
+Setting and Getting State
+----------------------------
+Cork comes with a built in mechanism for setting and retrieving state data from a running cork service.
+This data is organized in a key value pair dictionary, accessible from within your service code by importing `cork.state`.
+This enables you to configure your service on the fly and can also be used to coordinate the state of your service with an external process
+(useful for automated tests which may need to verify request content, for example).
+
+*How It Works*
+
+On any given cork service, there is a special route used to perform these operations: `/~cork`.
+State can be set by POSTing a <value> as the request's body to `/~cork/<key>`, which is recieved by the service.
+The POST request's body is appended to the MultiDict `cork.state` using the key specified.
+
+To get state from a running service, send a GET request to `/~cork/<key>`.
+The response will be in the form `key=value`.
+
+**Using cork.py to set and get state from a Cork service**
+
+Assume for example that we've already started a service on `localhost:7085`.
+To set state data use the command:
+
+    $ ./cork.py --set-state "foo=bar" "baz=spaces only work if the argument is quoted"
+    
+After that, you can retrieve state like this:
+
+    $ ./cork.py --get-state foo
+    foo=bar
+
+If you don't specify a key (or keys) then everything will be returned:
+
+    $ ./cork.py --get-state
+    foo=bar
+    baz=spaces only work if the argument is quoted
+
+If you request a key that doesn't exist, you get an empty string:
+    
+    $ ./cork.py --get-state spam
+    spam=
 
 Examples
 --------
