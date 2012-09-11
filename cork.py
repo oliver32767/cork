@@ -46,17 +46,23 @@ def stop():
     print("Stopping...")
     os.kill(os.getpid(), signal.SIGKILL)
 
+# set up state handlers
+state = MultiDict()
 @route('/~cork')
 @route('/~cork/<path:path>', method = ['GET', 'POST'])
 def _state(path = ''):
     # simple api for sending/retreiving form data
-
+    global state
     if request.method == 'POST':
         if path == '':
             log('no uri specified, using default', tag = "warning")
             path = 'default'
         elif path == "stop":
             stop()
+        elif path == 'reset':
+            log('resetting  state')
+            state = MultiDict()
+            raise HTTPError(200, "state reset")
             
         body = request.body.read()
         log("recieved new state data: %s=%s" % (path, body))
@@ -75,9 +81,6 @@ def _state(path = ''):
 
         response.content_type = "text/plain"
         return response
-
-state = MultiDict()
-
 
 ################################################################################
 # Startup code

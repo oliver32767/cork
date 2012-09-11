@@ -5,8 +5,8 @@
   <xs:complexType>
     <xs:sequence>
       <xs:element name="to" type="xs:string">{{to}}</xs:element>
-      <xs:element name="from" type="xs:string"/>
-      <xs:element name="heading" type="xs:string"/>
+      <xs:element name="from" type="xs:string">Cork</xs:element>
+      <xs:element name="heading" type="xs:string"></xs:element>
       <xs:element name="body" type="xs:string">{{body}}</xs:element>
     </xs:sequence>
   </xs:complexType>

@@ -27,7 +27,7 @@ That's all it takes!
 Press `ctrl + c` to stop the server. Run `./cork.py -h` for more information about cork's command line options.
 
 From here you should open `example/service.py` in your editor to see how simple it can be to mock a service with cork/bottle.
-See the **Examples** section for more examples of common tasks.
+See the [**Examples**](#examples) section for more examples of common tasks.
 For more information about how to use Bottle, consult the [Bottle documentation](http://bottlepy.org/docs/dev/index.html)
 (particularly the tutorial sections about [routing](http://bottlepy.org/docs/dev/tutorial.html#request-routing),
 [generating content](http://bottlepy.org/docs/dev/tutorial.html#generating-content)
@@ -107,19 +107,19 @@ This state data is organized in a key/value pair dictionary, accessible from wit
 This enables you to configure your service on the fly and can also be used to coordinate the state of your service with an external process
 (useful for automated tests which may need to verify request content, for example).
 
-**How It Works**
+### How It Works
 
 On any given cork service, there is a special route used to perform these operations: `/~cork`.
 State can be set by POSTing a \<value\> as the request's body to `/~cork/<key>`, which is recieved by the service.
-The POST request's body is appended to the MultiDict `cork.state` using the key specified.
-Additionaly, to stop the service, make a POST to `/~cork/stop`.
+The POST request's body is appended to the [MultiDict](http://bottlepy.org/docs/dev/api.html#bottle.MultiDict) `cork.state` using the key specified.
+Additionaly, to stop the service, make a POST to `/~cork/stop` and to reset all state data, make a POST to `/~cork/reset`.
 
 To get state from a running service, send a GET request to `/~cork/<key>`.
 The response will be in the form `key=value`.
 
-**Using cork.py to Set and Get State From a running Cork Service**
+### Using cork.py to Set and Get State From a running Cork Service
 
-Though not required, Cork comes with a simple built-in mechanism for setting and getting data this way.
+Cork comes with a simple built-in mechanism for setting and getting data this way.
 Assume for example that we've already started a service on the default host:port, though the following uses respect the `--host` and `--port` options.
 To set state data use the command:
 
@@ -140,8 +140,25 @@ If you request a key that doesn't exist, you get an empty string:
     
     $ ./cork.py --get-state spam
     spam=
+    
+To stop the service or reset its state, use the following commands:
 
-There is currently no way of clearing all state via this interface.
+    $ ./cork.py --set-state stop=true
+    $ ./cork.py --set-state reset=true
+
+### Example
+
+To see this in action, start up the example service.
+
+    $ ./cork.py example/service.py
+    
+Then, navigate to [http://localhost:7085/test](http://localhost:7085/test) and make a note of the `<xs:element name="to" type="xs:string">` element's value.
+
+Issue the command:
+
+    $ ./cork.py --set-state to=$USER
+    
+Reload the page in your browser and look for the new value in the `<xs:element name="to" type="xs:string">` element's value.
 
 Examples
 --------
