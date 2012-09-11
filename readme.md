@@ -102,8 +102,8 @@ def handlerB(path):
 
 Setting and Getting State
 ----------------------------
-Cork comes with a built in mechanism for setting and retrieving the state of a running cork service from another process.
-This state data is organized in a key/value pair dictionary, accessible from within your service code by importing `cork.state`.
+State data is managed through a simple HTTP api available at `<host>:<port>/~cork`.
+This state data is organized in a key/value pair dictionary, accessible from within your service code by importing the [MultiDict](http://bottlepy.org/docs/dev/api.html#bottle.MultiDict) `cork.state`.
 This enables you to configure your service on the fly and can also be used to coordinate the state of your service with an external process
 (useful for automated tests which may need to verify request content, for example).
 
@@ -111,7 +111,7 @@ This enables you to configure your service on the fly and can also be used to co
 
 On any given cork service, there is a special route used to perform these operations: `/~cork`.
 State can be set by POSTing a \<value\> as the request's body to `/~cork/<key>`, which is recieved by the service.
-The POST request's body is appended to the [MultiDict](http://bottlepy.org/docs/dev/api.html#bottle.MultiDict) `cork.state` using the key specified.
+The POST request's body is appended to `cork.state` using the key specified.
 Additionaly, to stop the service, make a POST to `/~cork/stop` and to reset all state data, make a POST to `/~cork/reset`.
 
 To get state from a running service, send a GET request to `/~cork/<key>`.
