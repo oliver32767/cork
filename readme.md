@@ -130,8 +130,8 @@ If no key is specified, Cork will return all available values.
 ### Using cork.py to Set and Get State From a Running Cork Service
 
 Cork comes with simple built-in utilities for setting and getting data this way.
-Assume for example that we've already started a service on the default host:port, though the following uses respect the `--host` and `--port` options.
-To set state data use the command:
+Assume for example that we've already started a service on the default host:port;
+to set state data use the command:
 
     $ ./cork.py --set-state "foo=bar"
     
@@ -154,7 +154,9 @@ If you request a key that doesn't exist, you get an empty string:
     
     $ ./cork.py --get-state spam
     spam=
-    
+
+To specify the host and/or port that the this request gets sent to, use the `--host` and/or `--port` options just as you would when starting a service.
+
 To stop the service or reset its state, use the following commands:
 
     $ ./cork.py --set-state stop=true
