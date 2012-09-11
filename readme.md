@@ -55,7 +55,6 @@ Cork + Charles Proxy
 Using a proxy server has two main advantages:
 
 * You can use the proxy to decrypt/encrypt SSL traffic.
-
 * No need to change hostnames/urls in the client code;
 this means that you can mock services for clients you do not have the source code to.
 
@@ -69,9 +68,7 @@ for instructions on how to set up Android 4.0+ devices to proxy through Charles.
 ### Charles Proxy Links
 
 * [Inspecting Requests & Responses](http://www.charlesproxy.com/documentation/using-charles/requests-responses/)
-
 * [SSL Proxying](http://www.charlesproxy.com/documentation/proxying/ssl-proxying/)
-
 * [Mapping Remote URLs](http://www.charlesproxy.com/documentation/tools/map-remote/)
 
 Listening on Multiple Ports
