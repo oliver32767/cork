@@ -2,7 +2,7 @@ Cork
 ================================
 
 Cork is a wrapper for the [bottle.py](htttp://bottlepy.org/) micro web-framework,
-and is designed to enable the quick and easy creation of mock services to use while testing client applications.
+and is designed to enable quick and easy creation of mock services to use while testing client applications.
 Cork extends bottle.py with a launcher-type utility, and provides a Python module, `cork`,
 which provides additional helper methods specific to describing mock web services.
 
@@ -23,13 +23,13 @@ To get started, all you need to do is clone the repository and start the example
     $ ./cork.py example/service.py
 
 Now open up your web browser, and navigate to [http://localhost:7085/test](http://localhost:7085/test).
-You should see some test data formatted as xml displayed in your browser window.
+You should see some xml displayed in your browser window.
 That's all it takes!
 Press `ctrl + c` to stop the server. Run `./cork.py -h` for more information about cork's command line options.
 
 ### Describing a Service
 
-From here you should open `example/service.py` in your editor to see what a basic service looks likie when desccribed with cork/bottle.
+From here you should open `example/service.py` in your editor to see what a basic service looks likie when described with cork/bottle.
 See the [Examples](#examples) section for more examples of common tasks.
 For more information about how to use Bottle, consult the [Bottle tutorial](http://bottlepy.org/docs/dev/tutorial.html)
 (particularly the tutorial sections about [routing](http://bottlepy.org/docs/dev/tutorial.html#request-routing),
@@ -129,10 +129,14 @@ If no key is specified, Cork will return all available values.
 
 ### Using cork.py to Set and Get State From a Running Cork Service
 
-Cork comes with a simple built-in mechanism for setting and getting data this way.
+Cork comes with simple built-in utilities for setting and getting data this way.
 Assume for example that we've already started a service on the default host:port, though the following uses respect the `--host` and `--port` options.
 To set state data use the command:
 
+    $ ./cork.py --set-state "foo=bar"
+    
+You can also set multiple vales:
+    
     $ ./cork.py --set-state "foo=bar" "baz=spaces only work if the argument is quoted"
     
 After that, you can retrieve state like this:
@@ -233,7 +237,7 @@ def handler():
 
 ----
 
-Logging a message. Note: logging messages are only displayed when the `-v` option is used.
+Logging a message. Note: logged messages are only displayed when the `-v` option is used.
 ```python
 from bottle import route
 from cork import log
