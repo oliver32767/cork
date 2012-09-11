@@ -52,25 +52,28 @@ def _state(path = ''):
     # simple api for sending/retreiving form data
 
     if request.method == 'POST':
-        log("recieved new state data")
         if path == '':
             log('no uri specified, using default', tag = "warning")
             path = 'default'
         elif path == "stop":
             stop()
+            
         body = request.body.read()
+        log("recieved new state data: %s=%s" % (path, body))
         state.append(path, body)
-        raise HTTPError(200)
+        return HTTPError(200, "%s=%s" % (path, body))
         
     elif request.method == 'GET':
-        log("recieved state query")
         body = ''
         if path == '':
             for k in state.keys():
                 body += "%s=%s\n" % (k, state.get(k, default = ''))
             response.body = body[:-1] # trim the last newline
         else:
-            response.body = "%s=%s\n" % (path, state.get(path, default = ''))
+            response.body = "%s=%s" % (path, state.get(path, default = ''))
+        log("queried state:\n%s" % response.body)
+
+        response.content_type = "text/plain"
         return response
 
 state = MultiDict()
