@@ -145,7 +145,7 @@ There is currently no way of clearing all state via this interface.
 
 Examples
 --------
-Define a static GET and POST route that returns the contents of a file as a response.
+Define a static route that returns the contents of a file as a response.
 Note, the path given to `read()` is assumed to be relative the \*.py file passed to `cork` at execution.
 ```python
 from bottle import route
