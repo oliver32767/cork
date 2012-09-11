@@ -29,7 +29,7 @@ Press `ctrl + c` to stop the server. Run `./cork.py -h` for more information abo
 
 ### Describing a Service
 
-From here you should open `example/service.py` in your editor to see what a basic service looks likie when described with cork/bottle.
+From here you should open `example/service.py` in your editor to see what a basic service looks like when described with cork/bottle.
 See the [Examples](#examples) section for more examples of common tasks.
 For more information about how to use Bottle, consult the [Bottle tutorial](http://bottlepy.org/docs/dev/tutorial.html)
 (particularly the tutorial sections about [routing](http://bottlepy.org/docs/dev/tutorial.html#request-routing),
@@ -59,7 +59,7 @@ Using a proxy server has two main advantages:
 
 * You can use the proxy to decrypt/encrypt SSL traffic.
 * No need to change hostnames/urls in the client code;
-this means that you can mock services for clients you do not have the source code to.
+this means that you can mock services for clients you do not have the source code to, or clients you don't want to modify.
 
 [Charles Proxy](http://www.charlesproxy.com) is the recommended proxy to use with Cork.
 It supports SSL decryption/encryption, mapping remote urls, and request/response inspection (useful for gathering canned data).
@@ -76,7 +76,7 @@ for instructions on how to set up Android 4.0+ devices to proxy through Charles.
 
 Listening on Multiple Ports
 ---------------------------
-Bottle does not support listening on multiple ports, but you have a few options:
+Bottle does not support listening on multiple ports, but you have options:
 
 * Start multiple cork services, each listening on a different port
 
@@ -90,8 +90,8 @@ http://www.example.com:8888/search
 
 In your proxy, you could map the URLs like so:
 ```
-http://api.example.com:4040/* -> http://localhost:7085/4040/
-http://www.example.com:8888/* -> http://localhost:7085/8888/
+http://api.example.com:4040/* -> http://localhost:7085/4040/*
+http://www.example.com:8888/* -> http://localhost:7085/8888/*
 ```
 
 In this example, the request `http://www.example.com:8888/search?q=search%20terms` now maps to `http://localhost:7085/8888/search?q=search%20terms`.
@@ -119,9 +119,9 @@ This enables you to configure your service on the fly and can also be used to co
 ### How It Works
 
 On any given cork service, there is a special route used to perform these operations: `/~cork`.
-State can be set by POSTing a \<value\> as the request's body to `/~cork/<key>`, which is recieved by the service.
-The POST request's body is appended to `cork.state` using the key specified.
-Additionaly, to stop the service, make a POST to `/~cork/stop` and to reset all state data, make a POST to `/~cork/reset`.
+State can be set by sending a POST request to `/~cork/<key>`; the body of this POST is the associated \<value\>.
+
+To stop the service, make a POST to `/~cork/stop` and to reset all state data, make a POST to `/~cork/reset`; for these methods, the request's body is ignored.
 
 To get state from a running service, send a GET request to `/~cork/<key>`.
 The response will be in the form `key=value`.
