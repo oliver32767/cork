@@ -36,22 +36,6 @@ For more information about how to use Bottle, consult the [Bottle tutorial](http
 [generating content](http://bottlepy.org/docs/dev/tutorial.html#generating-content)
 and [templates](http://bottlepy.org/docs/dev/tutorial.html#templates))
 
-Switching the Server Backend
------------------------------
-
-Cork by default uses Bottle's built-in WSGI server based on `wsgiref`.
-This server will be able to handle development and testing, and should be sufficient for light use.
-In the event that the built-in server is insufficient
-(such as when handling multiple simultaneous connections is required,
-or any time you experience mysterious broken pipe errors)
-you will want to install/obtain a [server backend supported by Bottle](http://bottlepy.org/docs/dev/deployment.html#switching-the-server-backend).
-We recommend [gevent](http://www.gevent.org/).
-
-Use the `--server` option to set the server bottle will use (example `--server=gevent`).
-
-Read the launcher help for the `--lib` option if you do not have permission to
-install server packages system-wide or simply don't want to.
-
 Cork + Charles Proxy
 ----------------------------------------
 
@@ -73,6 +57,22 @@ for instructions on how to set up Android 4.0+ devices to proxy through Charles.
 * [Inspecting Requests & Responses](http://www.charlesproxy.com/documentation/using-charles/requests-responses/)
 * [SSL Proxying](http://www.charlesproxy.com/documentation/proxying/ssl-proxying/)
 * [Mapping Remote URLs](http://www.charlesproxy.com/documentation/tools/map-remote/)
+
+Switching the Server Backend
+-----------------------------
+
+Cork by default uses Bottle's built-in WSGI server based on `wsgiref`.
+This server will be able to handle development and testing, and should be sufficient for light use.
+In the event that the built-in server is insufficient
+(such as when handling multiple simultaneous connections is required,
+or any time you experience mysterious broken pipe errors)
+you will want to install/obtain a [server backend supported by Bottle](http://bottlepy.org/docs/dev/deployment.html#switching-the-server-backend).
+We recommend [gevent](http://www.gevent.org/).
+
+Use the `--server` option to set the server bottle will use (example `--server=gevent`).
+
+Read the launcher help for the `--lib` option if you do not have permission to
+install server packages system-wide or simply don't want to.
 
 Listening on Multiple Ports
 ---------------------------
