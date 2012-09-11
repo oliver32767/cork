@@ -46,6 +46,10 @@ def stop():
     print("Stopping...")
     os.kill(os.getpid(), signal.SIGKILL)
 
+def reset():
+    log('resetting  state')
+    state = MultiDict()
+
 # set up state handlers
 state = MultiDict()
 @route('/~cork')
@@ -60,8 +64,7 @@ def _state(path = ''):
         elif path == "stop":
             stop()
         elif path == 'reset':
-            log('resetting  state')
-            state = MultiDict()
+            reset()
             raise HTTPError(200, "state reset")
             
         body = request.body.read()
@@ -93,6 +96,7 @@ if __name__ == '__main__':
     cork.read = read
     cork.log = log
     cork.stop = stop
+    cork.reset = reset
     
     # now we just monkey-patch it in
     sys.modules['cork'] = cork
@@ -107,7 +111,7 @@ if __name__ == '__main__':
     parser.add_argument("--lib", metavar = "LIB", help = "Path to a directory you want added to the PYTHONPATH and thus available to your service. Useful if you do not have permission to install packages system-wide or simply don't want to.")
     parser.add_argument("--host", default = "localhost", help = "Server address to bind to. Pass 0.0.0.0 to listens on all interfaces including the external one. (default: localhost)")
     parser.add_argument("--port", default = 7085, type = int, help = "Set the port that cork listens on (default: 7085)")
-    parser.add_argument("--server", default="wsgiref", help = "Switch the server backend (default: bottle.py embedded)")
+    parser.add_argument("--server", default="wsgiref", help = "Switch the server backend (default: wsgiref)")
     
     #parser.add_argument("--reloader", action = 'store_true', help = "Enable the bottle.py reloader, useful for development purposes")
     
