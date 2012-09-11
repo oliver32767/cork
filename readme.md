@@ -1,9 +1,10 @@
-Mock Web Services With Cork
+Cork
 ================================
 
-Cork is a wrapper for the [bottle.py](htttp://bottlepy.org/) micro web-framework designed to facilitate quickly and easily creating mock services to use while testing client applications.
-Cork extends bottle.py with a launcher-type utility, as well as a Python module, `cork`,
-that provides additional helper methods specific to quickly developing mock web services.
+Cork is a wrapper for the [bottle.py](htttp://bottlepy.org/) micro web-framework,
+and is designed to enable the quick and easy creation of mock services to use while testing client applications.
+Cork extends bottle.py with a launcher-type utility, and provides a Python module, `cork`,
+which provides additional helper methods specific to describing mock web services.
 
 Getting Started
 ------------
@@ -25,6 +26,8 @@ Now open up your web browser, and navigate to [http://localhost:7085/test](http:
 You should see some test data formatted as xml displayed in your browser window.
 That's all it takes!
 Press `ctrl + c` to stop the server. Run `./cork.py -h` for more information about cork's command line options.
+
+### Describing a Service
 
 From here you should open `example/service.py` in your editor to see what a basic service looks likie when desccribed with cork/bottle.
 See the [Examples](#examples) section for more examples of common tasks.
