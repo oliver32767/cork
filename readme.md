@@ -174,6 +174,8 @@ def handler():
     return read("data/response.xml")
 ```
 
+----
+
 Define a dynamic route that returns a reponse generated with bottle's template engine.
 ```python
 from bottle import route, template
@@ -184,6 +186,8 @@ def handler(path):
     tmpl = "Your request to <b>{{var}}</b> has been handled." 
     return template(tmpl, var = path)
 ```
+
+----
 
 Define routes for a variety of http methods
 ```python
@@ -202,6 +206,8 @@ def handlerC():
     # ...
 ```
 
+----
+
 Detect a specific query variable in a request and send back JSON with the correct MIME-type.
 ```python
 from bottle import route, request, response
@@ -216,6 +222,8 @@ def handler():
     return response
 ```
 
+----
+
 Logging a message. Note: logging messages are only displayed when the `-v` option is used.
 ```python
 from bottle import route
@@ -227,6 +235,8 @@ def handler(path)
     return("<b>Your request has been logged.</b>")
 ```
 
+----
+
 Responding to a request with a 404 error
 ```python
 from bottle import route, HTTPError
@@ -236,4 +246,5 @@ def handler(path):
     raise HTTPError(404, "The page you requested can not be found")
 ```
 
+----
 For more information on using the Bottle api, check the [Bottle API reference](http://bottlepy.org/docs/dev/api.html).
