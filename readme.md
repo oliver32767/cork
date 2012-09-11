@@ -26,14 +26,14 @@ You should see some test data formatted as xml displayed in your browser window.
 That's all it takes!
 Press `ctrl + c` to stop the server. Run `./cork.py -h` for more information about cork's command line options.
 
-From here you should open `example/service.py` in your editor to see how simple it can be to mock a service with cork/bottle.
-See the [**Examples**](#examples) section for more examples of common tasks.
-For more information about how to use Bottle, consult the [Bottle documentation](http://bottlepy.org/docs/dev/index.html)
+From here you should open `example/service.py` in your editor to see what a basic service looks likie when desccribed with cork/bottle.
+See the [Examples](#examples) section for more examples of common tasks.
+For more information about how to use Bottle, consult the [Bottle tutorial](http://bottlepy.org/docs/dev/tutorial.html)
 (particularly the tutorial sections about [routing](http://bottlepy.org/docs/dev/tutorial.html#request-routing),
 [generating content](http://bottlepy.org/docs/dev/tutorial.html#generating-content)
 and [templates](http://bottlepy.org/docs/dev/tutorial.html#templates))
 
-Using a Different WSGI Server
+Switching the Server Backend
 -----------------------------
 
 Cork by default uses Bottle's built-in WSGI server based on `wsgiref`.
@@ -49,7 +49,7 @@ Use the `--server` option to set the server bottle will use (example `--server=g
 Read the launcher help for the `--lib` option if you do not have permission to
 install server packages system-wide or simply don't want to.
 
-Cork and Charles Proxy
+Cork + Charles Proxy
 ----------------------------------------
 
 Using a proxy server has two main advantages:
@@ -66,11 +66,19 @@ Android testers should check out this
 [blog post](http://jaanus.com/post/17476995356/debugging-http-on-an-android-phone-or-tablet-with)
 for instructions on how to set up Android 4.0+ devices to proxy through Charles.
 
+### Charles Proxy Links
+
+* [Inspecting Requests & Responses](http://www.charlesproxy.com/documentation/using-charles/requests-responses/)
+
+* [SSL Proxying](http://www.charlesproxy.com/documentation/proxying/ssl-proxying/)
+
+* [Mapping Remote URLs](http://www.charlesproxy.com/documentation/tools/map-remote/)
+
 Listening on Multiple Ports
 ---------------------------
 Bottle does not support listening on multiple ports, but you have a few options:
 
-* Start multiple cork services each listening on a different port
+* Start multiple cork services, each listening on a different port
 
 * Use a proxy to route everything to the same port (recommended)
 
@@ -117,6 +125,7 @@ Additionaly, to stop the service, make a POST to `/~cork/stop` and to reset all 
 
 To get state from a running service, send a GET request to `/~cork/<key>`.
 The response will be in the form `key=value`.
+If no key is specified, Cork will return all available values.
 
 ### Using cork.py to Set and Get State From a running Cork Service
 
@@ -131,7 +140,7 @@ After that, you can retrieve state like this:
     $ ./cork.py --get-state foo
     foo=bar
 
-If you don't specify a key (or keys) then everything will be returned:
+If you don't specify a key, then all values will be returned:
 
     $ ./cork.py --get-state
     foo=bar
