@@ -111,26 +111,11 @@ if __name__ == '__main__':
     
     #parser.add_argument("--reloader", action = 'store_true', help = "Enable the bottle.py reloader, useful for development purposes")
     
-    parser.add_argument("--set-state", nargs = '+', metavar = "KEY=VALUE")
-    parser.add_argument("--get-state", nargs = "*", metavar = "KEY")
+    parser.add_argument("--get-state", nargs = "*", metavar = "KEY", help = "Send a GET request to <HOST>:<PORT>/~cork/<KEY> to retrieve the value associated with <KEY>. If <KEY> is not specified, returns all currently set values.")
+    parser.add_argument("--set-state", nargs = '+', metavar = "KEY=VALUE", help = "Send a POST request to <HOST>:<PORT>/~cork/<KEY> to associate <VALUE> with <KEY> in the recieving service's state dictionary.")
+    
     
     args = parser.parse_args()
-    
-    # if we've been given a STATE command, just send it and exit
-    #if args.state is not None:
-    #    try:
-    #        c = httplib.HTTPConnection(args.host, args.port)
-    #        c.request('GET', "/~cork?%s" % args.state)
-    #        r = c.getresponse()
-    #        if r.status == 200:
-    #            log("GET %s:%s?%s %d" %(args.host, args.port, args.state, r.status))
-    #        else:
-    #            print("GET %s:%s?%s %d (%s)" %(args.host, args.port, args.state, r.status, r.reason))
-    #        c.close()
-    #    except httplib.BadStatusLine:
-    #        pass # TODO: make error handling less alarming
-    #    exit()
-
 
     # do this when the user is requesting state
     if args.get_state is not None:
