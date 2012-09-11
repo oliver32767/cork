@@ -1,7 +1,7 @@
 Mock Web Services With Cork
 ================================
 
-Cork is a wrapper for the [bottle.py](htttp://bottlepy.org/) micro web-framework.
+Cork is a wrapper for the [bottle.py](htttp://bottlepy.org/) micro web-framework designed to facilitate quickly and easily creating mock services to use while testing client applications.
 Cork extends bottle.py with a launcher-type utility, as well as a Python module, `cork`,
 that provides additional helper methods specific to quickly developing mock web services.
 
