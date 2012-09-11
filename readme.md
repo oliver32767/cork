@@ -127,7 +127,7 @@ To get state from a running service, send a GET request to `/~cork/<key>`.
 The response will be in the form `key=value`.
 If no key is specified, Cork will return all available values.
 
-### Using cork.py to Set and Get State From a running Cork Service
+### Using cork.py to Set and Get State From a Running Cork Service
 
 Cork comes with a simple built-in mechanism for setting and getting data this way.
 Assume for example that we've already started a service on the default host:port, though the following uses respect the `--host` and `--port` options.
@@ -156,7 +156,7 @@ To stop the service or reset its state, use the following commands:
     $ ./cork.py --set-state stop=true
     $ ./cork.py --set-state reset=true
 
-### Example
+----
 
 To see this in action, start up the example service.
 
@@ -240,7 +240,7 @@ from cork import log
 
 @route('/log/<path:path>')
 def handler(path)
-    log(path, tag = "example") # the tag argument does not need to be explicitly named, and is optional (default = "cork")
+    log(path, tag = "example") # the tag argument does not need to be named, and is optional (default = "cork")
     return("<b>Your request has been logged.</b>")
 ```
 
