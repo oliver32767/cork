@@ -112,7 +112,7 @@ Setting and Getting State
 ----------------------------
 State data is managed through a simple HTTP api available at `<host>:<port>/~cork`.
 This state data is organized in a key/value pair dictionary,
-accessible from within your service code by importing the [MultiDict](http://bottlepy.org/docs/dev/api.html#bottle.MultiDict) `cork.state`.
+accessible from within your service code by importing the Python dictionary `cork.state`.
 This enables you to configure your service on the fly and can also be used to coordinate the state of your service with an external process
 (useful for automated tests which may need to verify request content, for example).
 
