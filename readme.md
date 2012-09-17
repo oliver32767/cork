@@ -176,6 +176,35 @@ Issue the command:
     
 Reload the page in your browser and look for the new value in the `<xs:element name="to" type="xs:string">` element's value.
 
+The `Pseudorandom` Class
+------------------------
+`Pseudorandom` is a custom subclass of `Random` with added facilities for generating test data (User names, email addresses, street names, etc.).
+Knowing that the key to reliable testing is a controlled environment, `Pseudorandom` is designed to be given a seed value at instantiation, which can subsequently be retrieved with `.get_seed()`.
+On subsequent test runs, using the same seed will result in the various functions returning the same random sequence.
+
+## Example
+
+```python
+from bottle import route
+from cork import Pseudorandom, state
+
+@route('/user/<username>')
+def get_user_details(username):
+    # note that you should NOT maintain a global instance of Pseudorandom. Instances should be as limited in scope as possible.
+    # storing a global seed in the state dictionary is useful, because you can adjust this setting at runtime via the /~cork api.
+    prnd = Pseudorandom(state.seed) 
+    
+    username = prnd.random_line("/fake_data/first_names.txt") + ' ' +
+                prnd.random_line("fake_data/last_names.txt") # Pseudorandom.random_line() reads a random line from the specified text file
+    
+    # random_string() returns a randomly generated string based on the supplied pattern (# gives a digit 0-9, $ gives an uppercase letter A-Z, and * gives both letters and digits)
+    phone_number = prnd.random_string("(###)-###-####")
+    
+    account_type = prnd.random_element(["free", "premium", "enterprise"]) # random_element() returns a random element from the supplied list
+    
+    return "User details for: %s<br/>Phone number: %s<br/>Account type: %s" % (username, phone_number, account_type)
+```
+
 Examples
 --------
 Define a static route that returns the contents of a file as a response.
