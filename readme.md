@@ -99,11 +99,11 @@ In this example, the request `http://www.example.com:8888/search?q=search%20term
 
 Here's what the routes look like for this example:
 ```python
-@route("/4040/account)
+@route("/4040/<path:path>")
 def handlerA(path):
     # handler code for services originally running on port 4040
 
-@route("/8888/search)
+@route("/8888/<path:path>")
 def handlerB(path):
     # handler code for services originally running on port 8888
 ```
