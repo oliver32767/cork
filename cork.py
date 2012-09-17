@@ -22,14 +22,44 @@ class Pseudorandom(Random):
     with a known seed. Using this seed in a different instance
     will result in the same random sequence being generated repeatedly.
     '''
-    _seed = 0
+    _seed = None
     
-    def __init__(self, seed = 0):
-        self._seed = seed
-        self.seed(seed)
-    
+    def __new__(self, *args, **kwargs):
+        '''
+        for reasons unbeknownst to me, this is required to subclass Random()
+        '''
+        return super(Pseudorandom, self).__new__(self)
+
+    def __init__(self, *args):
+        Random.__init__(self)
+        
+    def seed(self, *args):
+        '''overridden seed method, now accepts an iterable container of hashable objects'''
+        self._seed = self.hash_args(args)
+        super(Pseudorandom, self).seed(self._seed)
+        
+    def hash_args(self, *args):
+        '''
+        When passed a list of args, will iterate over each args and XOR it to previous hashes to generat this instance's seed value
+        from a list of hashable objects. If an object is not hashable, we attempt to convert it into a string before hashing.
+        Returns None if no args are given.
+        '''
+        if len(args) == 0:
+            return None
+        rv = 0
+        for arg in args:
+            if hasattr(arg, "__hash__"):
+                rv = rv ^ arg.__hash__() # XOR bitwise operation
+            else:
+                try:
+                    rv = rv ^ str(arg).__hash__() # attemt to convert it into a string, then hash it
+                except:
+                    raise TypeError("Argument cannot be hashed or converted into a String")
+            return rv
+        
     def get_seed():
         return _seed
+
     
     def random_element(self, elements):
         return elements[self.randrange(0, len(elements))]
