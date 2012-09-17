@@ -185,7 +185,7 @@ It's important to note that maintaining a globally-scoped instance of `Pseudoran
 instead you should keep the scope of your `Pseudorandom` instances as narrow as possible. Pseudorandom also has the ability to accept an arbitrary number of seeds,
 which are hashed and processed in to a single seed that the superclass uses.
 
-## `Pseudorandom` Example
+### `Pseudorandom` Example
 
 ```python
 from bottle import route
