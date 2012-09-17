@@ -18,7 +18,7 @@ Cork has the following dependencies:
 
 To get started, all you need to do is clone the repository and start the example service:
 
-    $ git clone git@github.com:oliver32767/cork
+    $ git clone git@github.com:RobotMonkey/cork
     $ cd cork
     $ chmod +x cork.py
     $ ./cork.py example/service.py
