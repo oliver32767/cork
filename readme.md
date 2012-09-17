@@ -180,7 +180,9 @@ The `Pseudorandom` Class
 ------------------------
 `Pseudorandom` is a custom subclass of `Random` with added facilities for generating test data (User names, email addresses, street names, etc.).
 Knowing that the key to reliable testing is a controlled environment, `Pseudorandom` is designed to be given a seed value at instantiation, which can subsequently be retrieved with `.get_seed()`.
-On subsequent test runs, using the same seed will result in the various functions returning the same random sequence.
+On subsequent test runs, using the same seed will result in the various functions returning the same random sequence. \\
+It's important to note that maintaining a globally-scoped instance of `Pseudorandom` is probably a Bad Idea;
+instead you should keep the scope of your `Pseudorandom` instances as narrow as possible.
 
 ## Example
 
@@ -190,11 +192,11 @@ from cork import Pseudorandom, state
 
 @route('/user/<username>')
 def get_user_details(username):
-    # note that you should NOT maintain a global instance of Pseudorandom. Instances should be as limited in scope as possible.
     # storing a global seed in the state dictionary is useful, because you can adjust this setting at runtime via the /~cork api.
+    # you couuld also use the value of username as a seed, to guarantee repeatable data.
     prnd = Pseudorandom(state.seed) 
     
-    username = prnd.random_line("/fake_data/first_names.txt") + ' ' +
+    full_name = prnd.random_line("/fake_data/first_names.txt") + ' ' +
                 prnd.random_line("fake_data/last_names.txt") # Pseudorandom.random_line() reads a random line from the specified text file
     
     # random_string() returns a randomly generated string based on the supplied pattern (# gives a digit 0-9, $ gives an uppercase letter A-Z, and * gives both letters and digits)
@@ -202,7 +204,7 @@ def get_user_details(username):
     
     account_type = prnd.random_element(["free", "premium", "enterprise"]) # random_element() returns a random element from the supplied list
     
-    return "User details for: %s<br/>Phone number: %s<br/>Account type: %s" % (username, phone_number, account_type)
+    return "User details for: %s<br/>Name: %s<br/>Phone number: %s<br/>Account type: %s" % (username, full_name, phone_number, account_type)
 ```
 
 Examples
