@@ -205,7 +205,7 @@ def get_user_details(username):
     prnd = Pseudorandom(username, state.seed)
     
     # Pseudorandom.random_line() reads a random line from the specified text file
-    full_name = prnd.random_line("/fake_data/first_names.txt") + ' ' +
+    full_name = prnd.random_line("fake_data/first_names.txt") + ' ' +
                 prnd.random_line("fake_data/last_names.txt") 
     
     # random_string() returns a randomly generated string based on the supplied pattern
