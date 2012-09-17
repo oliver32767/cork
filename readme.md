@@ -19,6 +19,7 @@ Cork has the following dependencies:
 To get started, all you need to do is clone the repository and start the example service:
 
     $ git clone git@github.com:oliver32767/cork
+    $ cd cork
     $ chmod +x cork.py
     $ ./cork.py example/service.py
 
@@ -42,8 +43,7 @@ Cork + Charles Proxy
 Using a proxy server has two main advantages:
 
 * You can use the proxy to decrypt/encrypt SSL traffic.
-* No need to change hostnames/urls in the client code;
-this means that you can mock services for clients you do not have the source code to, or clients you don't want to modify.
+* Being able to map remote urls means that you can mock services for clients you do not have the source code to, or clients you don't want to modify.
 
 [Charles Proxy](http://www.charlesproxy.com) is the recommended proxy to use with Cork.
 It supports SSL decryption/encryption, mapping remote urls, and request/response inspection (useful for gathering canned data).
