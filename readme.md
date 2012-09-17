@@ -214,7 +214,7 @@ def get_user_details(username):
     phone_number = prnd.random_string("(###)-###-####")
     
     # random_element() returns a random element from the supplied list
-    account_type = prnd.random_element(["free", "premium", "enterprise"])
+    account_type = prnd.random_element("free", "premium", "enterprise")
     
     return "User details for: %s<br/>Name: %s<br/>Phone number: %s<br/>Account type: %s" \
             % (username, full_name, phone_number, account_type)

@@ -61,7 +61,7 @@ class Pseudorandom(Random):
         return _seed
 
     
-    def random_element(self, elements):
+    def random_element(self, *elements):
         return elements[self.randrange(0, len(elements))]
     
     def random_string(self, pattern):
