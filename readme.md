@@ -204,7 +204,11 @@ def get_user_details(username):
     
     prnd = Pseudorandom(username, state.seed)
     
-    # Pseudorandom.random_line() reads a random line from the specified text file
+    # Pseudorandom.random_line() reads a random line from the specified text file.
+    # this differs from using something like .choice(file.readlines()) in that
+    # the file does not need to be read entirely in to memory.
+    # this allows you to use very large text files with no performance hit
+    
     full_name = prnd.random_line("fake_data/first_names.txt") + ' ' +
                 prnd.random_line("fake_data/last_names.txt") 
     
@@ -213,8 +217,9 @@ def get_user_details(username):
     # and '*' is replaced by a random letter OR digit)
     phone_number = prnd.random_string("(###)-###-####")
     
-    # random_element() returns a random element from the supplied list
-    account_type = prnd.random_element("free", "premium", "enterprise")
+    # choice() returns a random element from the supplied list
+    # this differs from the superclass implementation by adding suport for *args
+    account_type = prnd.choice("free", "premium", "enterprise")
     
     return "User details for: %s<br/>Name: %s<br/>Phone number: %s<br/>Account type: %s" \
             % (username, full_name, phone_number, account_type)
