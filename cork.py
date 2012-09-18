@@ -62,8 +62,13 @@ class Pseudorandom(Random):
 
     
     def random_element(self, *elements):
-        return elements[self.randrange(0, len(elements))]
-    
+        if len(elements) == 0:
+            return None
+        elif len(elements) == 1:
+            return elements[0][self.randrange(0, len(elements[0]))]
+        else:
+            return elements[self.randrange(0, len(elements))]
+
     def random_string(self, pattern):
         '''
         random_string takes a pattern and returns a generated string based on the pattern.
