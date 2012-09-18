@@ -32,11 +32,13 @@ class Pseudorandom(Random):
 
     def __init__(self, *args):
         Random.__init__(self)
+        self.seed(*args)
         
     def seed(self, *args):
         '''overridden seed method, now accepts an iterable container of hashable objects'''
-        self._seed = self.hash_args(args)
+        self._seed = self.hash_args(*args)
         super(Pseudorandom, self).seed(self._seed)
+        return self._seed
         
     def hash_args(self, *args):
         '''
@@ -47,21 +49,32 @@ class Pseudorandom(Random):
         if len(args) == 0:
             return None
         rv = 0
+        
         for arg in args:
-            if hasattr(arg, "__hash__"):
+            unhashable = False
+            
+            try:
                 rv = rv ^ arg.__hash__() # XOR bitwise operation
-            else:
+            except TypeError:
+                unhashable = True
+                
+            if unhashable:
+                # this means that the arg isn't hashable
                 try:
                     rv = rv ^ str(arg).__hash__() # attemt to convert it into a string, then hash it
                 except:
                     raise TypeError("Argument cannot be hashed or converted into a String")
-            return rv
+        return rv
         
     def get_seed():
         return _seed
 
     
-    def random_element(self, *elements):
+    def choice(self, *elements):
+        '''
+        overridden choice() implementation.
+        adds support for *args
+        '''
         if len(elements) == 0:
             return None
         elif len(elements) == 1:
