@@ -8,7 +8,7 @@ def route(path):
     
     response.body = template( \
                              read("data/response.xml"), \
-                             to = state.get("to", default = request.headers.get("User-Agent")), \
+                             to = state.get("to", request.headers.get("User-Agent")), \
                              body = "Here's an example of a response from '%s'" % path \
                              )
     return response
