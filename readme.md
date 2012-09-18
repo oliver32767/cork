@@ -178,8 +178,8 @@ Reload the page in your browser and look for the new value in the `<xs:element n
 
 The `Pseudorandom` Class
 ------------------------
-`Pseudorandom` is a custom subclass of `Random` with added facilities for generating test data (User names, email addresses, street names, etc.).
-Knowing that the key to reliable testing is a controlled environment, `Pseudorandom` is designed to be given a seed value at instantiation, which can subsequently be retrieved with `.get_seed()`.
+`Pseudorandom` is a custom subclass of `random.Random` with added facilities for generating test data (User names, email addresses, street names, etc.).
+Knowing that the key to reliable testing is a controlled environment, `Pseudorandom` is designed to be given a seed value at instantiation, which can then be retrieved with `.get_seed()`.
 On subsequent test runs, using the same seed will result in the various functions returning the same random sequence.
 It's important to note that maintaining a globally-scoped instance of `Pseudorandom` is probably a Bad Idea;
 instead you should keep the scope of your `Pseudorandom` instances as narrow as possible.
