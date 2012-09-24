@@ -98,7 +98,7 @@ class Pseudorandom(Random):
         rv = ''
         for c in pattern:
             if c in chars:
-                rv += self.random_element(chars[c])
+                rv += self.choice(chars[c])
             else:
                 rv += c
         return rv
